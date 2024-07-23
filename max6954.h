@@ -23,7 +23,7 @@ class MAX6954 {
     void begin();
     void set_digit_type_all_16segment();
     void set_digit_type_all_14segment();
-    void read(byte address, uint8_t cs);
+    int read(byte address, uint8_t cs);
     void write(byte address, byte value);
     void write_chip1(byte address, byte value);
     void write_chip2(byte address, byte value);

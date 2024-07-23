@@ -124,19 +124,20 @@ void MAX6954::set_digit_type_all_14segment() {
   write(0x0C, B11111111);
 }
 
-void MAX6954::read(byte address, uint8_t cs){
-  //Serial.print(address, HEX);
-  //Serial.print(" = ");
+int MAX6954::read(byte address, uint8_t cs){
+  int a = 0; 
 
   digitalWrite(cs, LOW);
-  SPI.transfer(address | B10000000);
+  SPI.transfer(address | B10000000); // Or Address with 0x80 (D15 high) to signal a read of register
   SPI.transfer(0x00);
   digitalWrite(cs, HIGH);
-
+  
   digitalWrite(cs, LOW);
-  SPI.transfer(address);
-  //Serial.println(SPI.transfer(0x00), BIN);
-  digitalWrite(cs, HIGH);
+  SPI.transfer(0x80);	//Read No-op
+  a = SPI.transfer(0x00);
+  digitalWrite(cs, HIGH); 
+  return a;
+}
 }
 
 void MAX6954::write(byte address, byte value) {
